@@ -43,7 +43,11 @@ namespace Habit_Tracker
                             break;
                         }
                     case (Operation.Delete):
-                        break;
+                        {
+                            var id = menu.GetId();
+                            databaseManager.Delete(id);
+                            break;
+                        }
                 }
             } while (true);
         }

@@ -121,5 +121,32 @@ namespace Habit_Tracker
                 connection.Close();
             }
         }
+        public void Delete(int id)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var checkId = connection.CreateCommand();
+                checkId.CommandText = $"SELECT EXISTS(SELECT 1 FROM habit_table WHERE Id = {id})";
+                int checkQuery = Convert.ToInt32(checkId.ExecuteScalar());
+
+                if (checkQuery == 0)
+                {
+                    connection.Close();
+                    Console.WriteLine($"Record with Id: {id} doesn't exist, press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                var tableCommand = connection.CreateCommand();
+
+                tableCommand.CommandText =
+                    $"DELETE from habit_table WHERE Id = {id}";
+
+                tableCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
 }
