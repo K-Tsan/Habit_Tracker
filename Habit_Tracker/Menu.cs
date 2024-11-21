@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,40 @@ namespace Habit_Tracker
 
                 Console.Clear();
                 Console.WriteLine("Please enter a valid option.");
+            } while (true);
+        }
+
+        public string GetDate()
+        {
+            Console.Clear();
+            do
+            {
+                Console.WriteLine("Please input the date (dd-mm-yy)");
+                var dateInput = Console.ReadLine();
+                if (DateTime.TryParseExact(dateInput, "dd-MM-yy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
+                {
+                    return dateInput;
+                }
+                Console.Clear();
+                Console.WriteLine("\n\nInvalid date");
+                
+            } while (true);
+        }
+
+        public int GetQuantity()
+        {
+            Console.Clear();
+            do
+            {
+                Console.WriteLine("Please input the quantity");
+                var quantity = Console.ReadLine();
+                if (int.TryParse(quantity, out int value))
+                {
+                    return value;
+                }
+                Console.Clear();
+                Console.WriteLine("\n\nInvalid value");
+
             } while (true);
         }
     }
