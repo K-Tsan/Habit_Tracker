@@ -14,7 +14,7 @@ namespace Habit_Tracker
                 var tableCommand = connection.CreateCommand();
 
                 tableCommand.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS drinking_water (
+                    CREATE TABLE IF NOT EXISTS habit_table (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Date TEXT,
                         Quantity INTEGER
@@ -23,6 +23,8 @@ namespace Habit_Tracker
                 tableCommand.ExecuteNonQuery();
                 connection.Close();
 
+                var menu = new Menu();
+                var input = menu.RunMenu();
             }
         }
     }
