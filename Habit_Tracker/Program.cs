@@ -5,27 +5,13 @@ namespace Habit_Tracker
 {
     class Program
     {
+        public enum Operations{ Create = 1, Read = 2, Update = 3, Delete = 4}
         static void Main(string[] args)
         {
-            string connectionString = @"Data Source=habitTracker.db";
-            using (var connection = new SqliteConnection(connectionString))
-            {
-                connection.Open();
-                var tableCommand = connection.CreateCommand();
-
-                tableCommand.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS habit_table (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Date TEXT,
-                        Quantity INTEGER
-                        )";
-
-                tableCommand.ExecuteNonQuery();
-                connection.Close();
-
-                var menu = new Menu();
-                var input = menu.RunMenu();
-            }
+            var databaseManager = new DatabaseManager("habit-tracker.db");
+            var menu = new Menu();
+            var input = menu.RunMenu();
+            Operations operation = (Operations)input;
         }
     }
 }
