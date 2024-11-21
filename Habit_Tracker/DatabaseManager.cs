@@ -2,10 +2,12 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Habit_Tracker.Program;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Habit_Tracker
 {
@@ -48,6 +50,46 @@ namespace Habit_Tracker
 
                 tableCommand.ExecuteNonQuery();
                 connection.Close();
+            }
+        }
+
+        public void ViewRecords()
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCommand = connection.CreateCommand();
+                tableCommand.CommandText =
+                    $"SELECT * FROM habit_table";
+
+                List<Habit> tableData = new List<Habit>();
+                SqliteDataReader reader = tableCommand.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tableData.Add(new Habit
+                        {
+                            Id = reader.GetInt32(0),
+                            Date = DateTime.ParseExact(reader.GetString(1), "dd-MM-yy", new CultureInfo("en-US")),
+                            Quantity = reader.GetInt32(2)
+                        });
+                    }
+                } else
+                {
+                    Console.WriteLine("Table is empty.");
+                    return;
+                }
+                connection.Close();
+                
+                foreach (var habit in tableData)
+                {
+                    Console.WriteLine($"| {habit.Id} | {habit.Date.ToString("dd-MMM-yyyy")} | Quantity: {habit.Quantity} |");
+                }
+
+                Console.WriteLine("\nPress any key to return.");
+                Console.ReadKey();
             }
         }
     }

@@ -10,22 +10,30 @@ namespace Habit_Tracker
         {
             var databaseManager = new DatabaseManager("habit-tracker.db");
             var menu = new Menu();
-            var input = menu.RunMenu();
-            Operation operation = (Operation)input;
-            switch (operation)
+            do
             {
-                case (Operation.Create):
-                    var date = menu.GetDate();
-                    var quantity = menu.GetQuantity();
-                    databaseManager.Insert(date, quantity);
+                var input = menu.RunMenu();
+                if (input == 5)
+                {
                     break;
-                case (Operation.Read):
-                    break;
-                case (Operation.Update):
-                    break;
-                case (Operation.Delete):
-                    break;
-            }
+                }
+                Operation operation = (Operation)input;
+                switch (operation)
+                {
+                    case (Operation.Create):
+                        var date = menu.GetDate();
+                        var quantity = menu.GetQuantity();
+                        databaseManager.Insert(date, quantity);
+                        break;
+                    case (Operation.Read):
+                        databaseManager.ViewRecords();
+                        break;
+                    case (Operation.Update):
+                        break;
+                    case (Operation.Delete):
+                        break;
+                }
+            } while (true);
         }
     }
 }
