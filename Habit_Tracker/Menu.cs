@@ -34,6 +34,25 @@ namespace Habit_Tracker
                 Console.WriteLine("Please enter a valid option.");
             } while (true);
         }
+        public int GetId()
+        {
+            Console.Clear();
+            do
+            {
+                Console.WriteLine("Please input an ID");
+                var quantity = Console.ReadLine();
+                if (int.TryParse(quantity, out int value))
+                {
+                    if (value >= 0)
+                    {
+                        return value;
+                    }
+                }
+                Console.Clear();
+                Console.WriteLine("\n\nInvalid value");
+
+            } while (true);
+        }
 
         public string GetDate()
         {
@@ -61,7 +80,10 @@ namespace Habit_Tracker
                 var quantity = Console.ReadLine();
                 if (int.TryParse(quantity, out int value))
                 {
-                    return value;
+                    if (value > 0)
+                    {
+                        return value;
+                    }
                 }
                 Console.Clear();
                 Console.WriteLine("\n\nInvalid value");

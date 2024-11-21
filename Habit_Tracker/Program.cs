@@ -15,21 +15,33 @@ namespace Habit_Tracker
                 var input = menu.RunMenu();
                 if (input == 5)
                 {
+                    Console.WriteLine("Exiting program, press any key.");
+                    Console.ReadKey();
                     break;
                 }
                 Operation operation = (Operation)input;
                 switch (operation)
                 {
                     case (Operation.Create):
-                        var date = menu.GetDate();
-                        var quantity = menu.GetQuantity();
-                        databaseManager.Insert(date, quantity);
-                        break;
+                        {
+                            var date = menu.GetDate();
+                            var quantity = menu.GetQuantity();
+                            databaseManager.Insert(date, quantity);
+                            break;
+                        }
                     case (Operation.Read):
-                        databaseManager.ViewRecords();
-                        break;
+                        {
+                            databaseManager.ViewRecords();
+                            break;
+                        }
                     case (Operation.Update):
-                        break;
+                        {
+                            var id = menu.GetId();
+                            var date = menu.GetDate();
+                            var quantity = menu.GetQuantity();
+                            databaseManager.Update(id, date, quantity);
+                            break;
+                        }
                     case (Operation.Delete):
                         break;
                 }

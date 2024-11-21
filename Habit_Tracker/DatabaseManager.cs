@@ -82,7 +82,8 @@ namespace Habit_Tracker
                     return;
                 }
                 connection.Close();
-                
+
+                Console.Clear();
                 foreach (var habit in tableData)
                 {
                     Console.WriteLine($"| {habit.Id} | {habit.Date.ToString("dd-MMM-yyyy")} | Quantity: {habit.Quantity} |");
@@ -90,6 +91,34 @@ namespace Habit_Tracker
 
                 Console.WriteLine("\nPress any key to return.");
                 Console.ReadKey();
+            }
+        }
+
+        public void Update(int id, string date, int quantity)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var checkId = connection.CreateCommand();
+                checkId.CommandText = $"SELECT EXISTS(SELECT 1 FROM habit_table WHERE Id = {id})";
+                int checkQuery = Convert.ToInt32(checkId.ExecuteScalar());
+
+                if (checkQuery == 0)
+                {
+                    connection.Close();
+                    Console.WriteLine($"Record with Id: {id} doesn't exist, press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                var tableCommand = connection.CreateCommand();
+
+                tableCommand.CommandText =
+                    $"UPDATE habit_table SET Date = '{date}', Quantity = {quantity} WHERE Id = {id}";
+
+                tableCommand.ExecuteNonQuery();
+                connection.Close();
             }
         }
     }
